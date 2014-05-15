@@ -1,0 +1,2 @@
+* Incluir la sección para la importación del XML
+* Bosquejar sección de administración de cheques
