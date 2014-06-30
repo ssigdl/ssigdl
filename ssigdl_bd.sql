@@ -32,7 +32,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `ssigdl`.`ssi_articulo_unidad_medida` ;
 
 CREATE TABLE IF NOT EXISTS `ssigdl`.`ssi_articulo_unidad_medida` (
-  `arum_id` INT NOT NULL,
+  `arum_id` INT NOT NULL AUTO_INCREMENT,
   `arum_descripcion` VARCHAR(255) NULL,
   PRIMARY KEY (`arum_id`))
 ENGINE = InnoDB;
@@ -53,17 +53,17 @@ CREATE TABLE IF NOT EXISTS `ssigdl`.`ssi_articulo` (
   `art_subtotal` DECIMAL(10,2) NULL DEFAULT 0.00,
   `art_imagen` VARCHAR(255) NULL,
   `art_cat_id_fk` INT NOT NULL,
-  `art_arlo_id_fk` INT NOT NULL,
+  `art_arum_id_fk` INT NOT NULL,
   PRIMARY KEY (`art_id`),
   INDEX `fk_ssi_articulo_ssi_articulo_cat1_idx` (`art_cat_id_fk` ASC),
-  INDEX `fk_ssi_articulo_ssi_articulo_lote1_idx` (`art_arlo_id_fk` ASC),
+  INDEX `fk_ssi_articulo_ssi_articulo_unidad_medida1_idx` (`art_arum_id_fk` ASC),
   CONSTRAINT `fk_ssi_articulo_ssi_articulo_cat1`
     FOREIGN KEY (`art_cat_id_fk`)
     REFERENCES `ssigdl`.`ssi_categoria` (`cat_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_ssi_articulo_ssi_articulo_lote1`
-    FOREIGN KEY (`art_arlo_id_fk`)
+  CONSTRAINT `fk_ssi_articulo_ssi_articulo_unidad_medida1`
+    FOREIGN KEY (`art_arum_id_fk`)
     REFERENCES `ssigdl`.`ssi_articulo_unidad_medida` (`arum_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -110,13 +110,13 @@ CREATE TABLE IF NOT EXISTS `ssigdl`.`ssi_empresa` (
   `emp_nombre` VARCHAR(100) NULL,
   `emp_fecha_registro` DATE NULL DEFAULT '0001-01-01',
   `emp_rfc` VARCHAR(20) NULL,
-  `emp_dir_id_fk` INT NOT NULL,
+  `emp_dire_id_fk` INT NOT NULL,
   `emp_empc_id_fk` INT NOT NULL,
   PRIMARY KEY (`emp_id`),
-  INDEX `fk_ssi_empresa_ssi_direccion_empresa1_idx` (`emp_dir_id_fk` ASC),
+  INDEX `fk_ssi_empresa_ssi_direccion_empresa1_idx` (`emp_dire_id_fk` ASC),
   INDEX `fk_ssi_empresa_ssi_empresa_cat1_idx` (`emp_empc_id_fk` ASC),
   CONSTRAINT `fk_ssi_empresa_ssi_direccion_empresa1`
-    FOREIGN KEY (`emp_dir_id_fk`)
+    FOREIGN KEY (`emp_dire_id_fk`)
     REFERENCES `ssigdl`.`ssi_direccion_empresa` (`dire_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
@@ -162,11 +162,11 @@ CREATE TABLE IF NOT EXISTS `ssigdl`.`ssi_servicio` (
   `serv_descripcion` VARCHAR(255) NULL,
   `serv_precio` DECIMAL(10,2) NULL DEFAULT 0.00,
   `serv_imagen` VARCHAR(255) NULL,
-  `serv_catc_id_fk` INT NOT NULL,
+  `serv_cat_id_fk` INT NOT NULL,
   PRIMARY KEY (`serv_id`),
-  INDEX `fk_ssi_servicio_ssi_articulo_cat1_idx` (`serv_catc_id_fk` ASC),
+  INDEX `fk_ssi_servicio_ssi_articulo_cat1_idx` (`serv_cat_id_fk` ASC),
   CONSTRAINT `fk_ssi_servicio_ssi_articulo_cat1`
-    FOREIGN KEY (`serv_catc_id_fk`)
+    FOREIGN KEY (`serv_cat_id_fk`)
     REFERENCES `ssigdl`.`ssi_categoria` (`cat_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -179,19 +179,19 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `ssigdl`.`ssi_factura_articulo_rel` ;
 
 CREATE TABLE IF NOT EXISTS `ssigdl`.`ssi_factura_articulo_rel` (
-  `fact_art_id` INT NOT NULL AUTO_INCREMENT,
-  `art_id_fk` INT NOT NULL,
-  `fact_id_fk` INT NOT NULL,
-  PRIMARY KEY (`fact_art_id`),
-  INDEX `fk_ssi_factura_articulo_rel_ssi_articulo1_idx` (`art_id_fk` ASC),
-  INDEX `fk_ssi_factura_articulo_rel_ssi_factura1_idx` (`fact_id_fk` ASC),
+  `fart_id` INT NOT NULL AUTO_INCREMENT,
+  `fart_art_id_fk` INT NOT NULL,
+  `fart_fact_id_fk` INT NOT NULL,
+  PRIMARY KEY (`fart_id`),
+  INDEX `fk_ssi_factura_articulo_rel_ssi_articulo1_idx` (`fart_art_id_fk` ASC),
+  INDEX `fk_ssi_factura_articulo_rel_ssi_factura1_idx` (`fart_fact_id_fk` ASC),
   CONSTRAINT `fk_ssi_factura_articulo_rel_ssi_articulo1`
-    FOREIGN KEY (`art_id_fk`)
+    FOREIGN KEY (`fart_art_id_fk`)
     REFERENCES `ssigdl`.`ssi_articulo` (`art_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_ssi_factura_articulo_rel_ssi_factura1`
-    FOREIGN KEY (`fact_id_fk`)
+    FOREIGN KEY (`fart_fact_id_fk`)
     REFERENCES `ssigdl`.`ssi_factura` (`fact_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -218,19 +218,19 @@ DROP TABLE IF EXISTS `ssigdl`.`ssi_telefono` ;
 CREATE TABLE IF NOT EXISTS `ssigdl`.`ssi_telefono` (
   `tel_id` INT NOT NULL AUTO_INCREMENT,
   `tel_telefono` VARCHAR(16) NULL,
-  `tele_telc_id_fk` INT NOT NULL,
-  `dire_tel_id_fk` INT NOT NULL,
-  PRIMARY KEY (`tel_id`, `tele_telc_id_fk`),
-  INDEX `fk_ssi_telefono_empresa_ssi_telefono_cat1_idx` (`tele_telc_id_fk` ASC),
-  INDEX `fk_ssi_telefono_ssi_direccion_empresa1_idx` (`dire_tel_id_fk` ASC),
-  CONSTRAINT `fk_ssi_telefono_empresa_ssi_telefono_cat1`
-    FOREIGN KEY (`tele_telc_id_fk`)
-    REFERENCES `ssigdl`.`ssi_telefono_cat` (`telc_id`)
+  `tel_telc_id_fk` INT NOT NULL,
+  `tel_dire_id_fk` INT NOT NULL,
+  PRIMARY KEY (`tel_id`),
+  INDEX `fk_ssi_telefono_ssi_direccion_empresa1_idx` (`tel_dire_id_fk` ASC),
+  INDEX `fk_ssi_telefono_ssi_telefono_cat1_idx` (`tel_telc_id_fk` ASC),
+  CONSTRAINT `fk_ssi_telefono_ssi_direccion_empresa1`
+    FOREIGN KEY (`tel_dire_id_fk`)
+    REFERENCES `ssigdl`.`ssi_direccion_empresa` (`dire_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_ssi_telefono_ssi_direccion_empresa1`
-    FOREIGN KEY (`dire_tel_id_fk`)
-    REFERENCES `ssigdl`.`ssi_direccion_empresa` (`dire_id`)
+  CONSTRAINT `fk_ssi_telefono_ssi_telefono_cat1`
+    FOREIGN KEY (`tel_telc_id_fk`)
+    REFERENCES `ssigdl`.`ssi_telefono_cat` (`telc_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -242,19 +242,19 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `ssigdl`.`ssi_factura_servicio_rel` ;
 
 CREATE TABLE IF NOT EXISTS `ssigdl`.`ssi_factura_servicio_rel` (
-  `fact_serv_id_fk` INT NOT NULL,
-  `ssi_factura_fact_id` INT NOT NULL,
-  `ssi_servicio_serv_id` INT NOT NULL,
-  PRIMARY KEY (`fact_serv_id_fk`),
-  INDEX `fk_ssi_factura_servicio_rel_ssi_factura1_idx` (`ssi_factura_fact_id` ASC),
-  INDEX `fk_ssi_factura_servicio_rel_ssi_servicio1_idx` (`ssi_servicio_serv_id` ASC),
+  `fase_id` INT NOT NULL,
+  `fase_serv_id_fk` INT NOT NULL,
+  `fase_fact_id_fk` INT NOT NULL,
+  PRIMARY KEY (`fase_id`),
+  INDEX `fk_ssi_factura_servicio_rel_ssi_factura1_idx` (`fase_serv_id_fk` ASC),
+  INDEX `fk_ssi_factura_servicio_rel_ssi_servicio1_idx` (`fase_fact_id_fk` ASC),
   CONSTRAINT `fk_ssi_factura_servicio_rel_ssi_factura1`
-    FOREIGN KEY (`ssi_factura_fact_id`)
+    FOREIGN KEY (`fase_serv_id_fk`)
     REFERENCES `ssigdl`.`ssi_factura` (`fact_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_ssi_factura_servicio_rel_ssi_servicio1`
-    FOREIGN KEY (`ssi_servicio_serv_id`)
+    FOREIGN KEY (`fase_fact_id_fk`)
     REFERENCES `ssigdl`.`ssi_servicio` (`serv_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
