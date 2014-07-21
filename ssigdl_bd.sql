@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `ssigdl`.`ssi_categoria` (
   `cat_id` INT NOT NULL AUTO_INCREMENT,
   `cat_nombre` VARCHAR(100) NULL,
   `cat_descripcion` VARCHAR(255) NULL,
-  `cat_super_id_fk` INT NOT NULL,
+  `cat_super_id_fk` INT NULL,
   PRIMARY KEY (`cat_id`),
   INDEX `fk_ssi_categoria_ssi_categoria1_idx` (`cat_super_id_fk` ASC),
   CONSTRAINT `fk_ssi_categoria_ssi_categoria1`
@@ -242,7 +242,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `ssigdl`.`ssi_factura_servicio_rel` ;
 
 CREATE TABLE IF NOT EXISTS `ssigdl`.`ssi_factura_servicio_rel` (
-  `fase_id` INT NOT NULL,
+  `fase_id` INT NOT NULL AUTO_INCREMENT,
   `fase_serv_id_fk` INT NOT NULL,
   `fase_fact_id_fk` INT NOT NULL,
   PRIMARY KEY (`fase_id`),
@@ -267,10 +267,10 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `ssigdl`.`ssi_categoria_temporal` ;
 
 CREATE TABLE IF NOT EXISTS `ssigdl`.`ssi_categoria_temporal` (
-  `catt_id` INT NOT NULL,
-  `cat_id_padre` INT NULL,
-  `cat_id_hijo` INT NULL,
-  `cat_nivel` INT NULL,
+  `catt_id` INT NOT NULL AUTO_INCREMENT,
+  `catt_id_padre` INT NULL,
+  `catt_id_hijo` INT NULL,
+  `catt_nivel` INT NULL,
   PRIMARY KEY (`catt_id`))
 ENGINE = InnoDB;
 
@@ -281,7 +281,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `ssigdl`.`ssi_cheque` ;
 
 CREATE TABLE IF NOT EXISTS `ssigdl`.`ssi_cheque` (
-  `che_id` INT NOT NULL,
+  `che_id` INT NOT NULL AUTO_INCREMENT,
   `che_numero` VARCHAR(30) NULL,
   `che_fecha` DATE NULL DEFAULT '0001-01-01',
   `che_monto` DECIMAL(10,2) NULL DEFAULT 0.00,
