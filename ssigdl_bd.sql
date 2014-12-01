@@ -291,6 +291,53 @@ CREATE TABLE IF NOT EXISTS `ssigdl`.`ssi_cheque` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `ssigdl`.`ssi_informacion_personal`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `ssigdl`.`ssi_informacion_personal` ;
+
+CREATE TABLE IF NOT EXISTS `ssigdl`.`ssi_informacion_personal` (
+  `infp_id` INT NOT NULL,
+  `infp_nombre` VARCHAR(50) NULL,
+  `infp_apellido` VARCHAR(50) NULL,
+  `infp_sexo` SET('M', 'F') NULL,
+  PRIMARY KEY (`infp_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ssigdl`.`ssi_usuario`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `ssigdl`.`ssi_usuario` ;
+
+CREATE TABLE IF NOT EXISTS `ssigdl`.`ssi_usuario` (
+  `usu_id` INT NOT NULL,
+  `usu_codigo` VARCHAR(255) NULL,
+  `usu_password` VARCHAR(255) NULL,
+  `usu_fecha` DATE NULL,
+  `usu_infp_id_fk` INT NOT NULL,
+  PRIMARY KEY (`usu_id`),
+  INDEX `fk_ssi_usuario_ssi_informacion_personal1_idx` (`usu_infp_id_fk` ASC),
+  CONSTRAINT `fk_ssi_usuario_ssi_informacion_personal1`
+    FOREIGN KEY (`usu_infp_id_fk`)
+    REFERENCES `ssigdl`.`ssi_informacion_personal` (`infp_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Data for table `ssigdl`.`ssi_cheque`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `ssigdl`;
+INSERT INTO `ssigdl`.`ssi_cheque` (`che_id`, `che_numero`, `che_fecha`, `che_monto`, `che_receptor`, `che_concepto`) VALUES (1, '120', now(), 150, 'IBM', 'Equipos');
+INSERT INTO `ssigdl`.`ssi_cheque` (`che_id`, `che_numero`, `che_fecha`, `che_monto`, `che_receptor`, `che_concepto`) VALUES (2, '121', now() - INTERVAL 1 DAY, 250, 'Sanmina', 'Mesas');
+INSERT INTO `ssigdl`.`ssi_cheque` (`che_id`, `che_numero`, `che_fecha`, `che_monto`, `che_receptor`, `che_concepto`) VALUES (3, '122', now() - INTERVAL 2 DAY, 450, 'Dicesa', 'Carros');
+
+COMMIT;
+
