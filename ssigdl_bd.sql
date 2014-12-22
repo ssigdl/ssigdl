@@ -282,7 +282,7 @@ DROP TABLE IF EXISTS `ssigdl`.`ssi_cheque` ;
 
 CREATE TABLE IF NOT EXISTS `ssigdl`.`ssi_cheque` (
   `che_id` INT NOT NULL AUTO_INCREMENT,
-  `che_numero` VARCHAR(30) NULL,
+  `che_numero` VARCHAR(7) NULL,
   `che_fecha` DATE NULL DEFAULT '0001-01-01',
   `che_monto` DECIMAL(10,2) NULL DEFAULT 0.00,
   `che_receptor` VARCHAR(100) NULL,
@@ -336,8 +336,8 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 START TRANSACTION;
 USE `ssigdl`;
 INSERT INTO `ssigdl`.`ssi_cheque` (`che_id`, `che_numero`, `che_fecha`, `che_monto`, `che_receptor`, `che_concepto`) VALUES (1, '120', now(), 150, 'IBM', 'Equipos');
-INSERT INTO `ssigdl`.`ssi_cheque` (`che_id`, `che_numero`, `che_fecha`, `che_monto`, `che_receptor`, `che_concepto`) VALUES (2, '121', now() - INTERVAL 1 DAY, 250, 'Sanmina', 'Mesas');
-INSERT INTO `ssigdl`.`ssi_cheque` (`che_id`, `che_numero`, `che_fecha`, `che_monto`, `che_receptor`, `che_concepto`) VALUES (3, '122', now() - INTERVAL 2 DAY, 450, 'Dicesa', 'Carros');
+INSERT INTO `ssigdl`.`ssi_cheque` (`che_id`, `che_numero`, `che_fecha`, `che_monto`, `che_receptor`, `che_concepto`) VALUES (2, '121', now - INTERVAL 1 DAY, 250, 'Sanmina', 'Mesas');
+INSERT INTO `ssigdl`.`ssi_cheque` (`che_id`, `che_numero`, `che_fecha`, `che_monto`, `che_receptor`, `che_concepto`) VALUES (3, '122', now - INTERVAL 2 DAY, 450, 'Dicesa', 'Carros');
 
 COMMIT;
 
